@@ -21,6 +21,7 @@ function App() {
   const [currentCategory, setCurrentCategory] = useState('全部');
   const [showPostForm, setShowPostForm] = useState(false);
   const [detailIdx, setDetailIdx] = useState(null);
+  const [detailPostId, setDetailPostId] = useState(null); // 新增唯一标识
   const [user, setUser] = useState(null);
   const [showUserInfo, setShowUserInfo] = useState(false);
   const [hasMessage, setHasMessage] = useState(false);
@@ -122,12 +123,24 @@ function App() {
     }} />;
   }
   if (showUserInfo) {
-    return <UserInfo user={user} onUpdate={handleUpdateUser} onBack={() => setShowUserInfo(false)} onLogout={() => {
+    return <UserInfo user={user} posts={posts} onUpdate={handleUpdateUser} onBack={() => setShowUserInfo(false)} onLogout={() => {
       if(window.confirm('确定要退出登录吗？')){
         setUser(null);
         setShowUserInfo(false);
       }
-    }} hasMessage={hasMessage} onChangePwd={()=>setShowChangePwd(true)} />;
+    }} hasMessage={hasMessage} onChangePwd={()=>setShowChangePwd(true)} setDetailIdx={post => {
+      setShowUserInfo(false);
+      setDetailPostId(post.createdAt + '||' + post.title);
+      setDetailIdx(null); // 兼容旧逻辑
+    }} />;
+  }
+
+  // 详情页渲染逻辑：优先 detailPostId，否则用 detailIdx
+  let detailPost = null;
+  if (detailPostId) {
+    detailPost = posts.find(p => (p.createdAt + '||' + p.title) === detailPostId);
+  } else if (detailIdx !== null) {
+    detailPost = posts[detailIdx];
   }
 
   return (
@@ -169,15 +182,17 @@ function App() {
         </nav>
       </header>
       <main>
-        {detailIdx !== null ? (
+        {detailPost ? (
           <PostDetail
-            post={posts[detailIdx]}
-            onBack={() => setDetailIdx(null)}
+            post={detailPost}
+            onBack={() => { setDetailPostId(null); setDetailIdx(null); }}
             onAddComment={user ? handleAddComment : null}
             canComment={!!user}
             onLike={() => {
               const newPosts = [...posts];
-              const p = newPosts[detailIdx];
+              const idx = newPosts.findIndex(p => (p.createdAt + '||' + p.title) === (detailPost.createdAt + '||' + detailPost.title));
+              if (idx === -1) return;
+              const p = newPosts[idx];
               if (!p.likedBy) p.likedBy = [];
               if (!p.likes) p.likes = 0;
               if (!p.likedBy.includes(user.username)) {
@@ -191,7 +206,9 @@ function App() {
             }}
             onFav={() => {
               const newPosts = [...posts];
-              const p = newPosts[detailIdx];
+              const idx = newPosts.findIndex(p => (p.createdAt + '||' + p.title) === (detailPost.createdAt + '||' + detailPost.title));
+              if (idx === -1) return;
+              const p = newPosts[idx];
               if (!p.favedBy) p.favedBy = [];
               if (!p.favs) p.favs = 0;
               if (!p.favedBy.includes(user.username)) {
@@ -205,7 +222,9 @@ function App() {
             }}
             onShare={() => {
               const newPosts = [...posts];
-              const p = newPosts[detailIdx];
+              const idx = newPosts.findIndex(p => (p.createdAt + '||' + p.title) === (detailPost.createdAt + '||' + detailPost.title));
+              if (idx === -1) return;
+              const p = newPosts[idx];
               if (!p.shares) p.shares = 0;
               p.shares++;
               setPosts(newPosts);

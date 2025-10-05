@@ -2,25 +2,25 @@ import React, { useState } from 'react';
 import { useEffect, useState as useStateReact } from 'react';
 import './App.css';
 
-function UserInfo({ user, onUpdate, onBack, onLogout, hasMessage, onChangePwd }) {
+function UserInfo({ user, posts, onUpdate, onBack, onLogout, hasMessage, onChangePwd, setDetailIdx }) {
   // 界面切换
   const [tab, setTab] = useStateReact('profile'); // profile, message, myposts, myfav
   // 获取所有帖子（从window.posts或props传递）
   const [myPosts, setMyPosts] = useStateReact([]);
   const [myFavs, setMyFavs] = useStateReact([]);
   useEffect(() => {
-    if (window.posts) {
-      setMyPosts(window.posts.filter(p => p.author?.username === user.username));
-      setMyFavs(window.posts.filter(p => p.favedBy && p.favedBy.includes(user.username)));
+    if (posts) {
+      setMyPosts(posts.filter(p => p.author?.username === user.username));
+      setMyFavs(posts.filter(p => p.favedBy && p.favedBy.includes(user.username)));
     }
-  }, [user]);
+  }, [user, posts]);
 
   // 消息列表
   const [messages, setMessages] = useStateReact([]);
   useEffect(() => {
-    if (!window.posts) return;
+    if (!posts) return;
     let msgList = [];
-    window.posts.forEach(post => {
+    posts.forEach(post => {
       // 自己发的帖子被评论
       if (post.author?.username === user.username) {
         post.comments.forEach(c => {
@@ -160,13 +160,15 @@ function UserInfo({ user, onUpdate, onBack, onLogout, hasMessage, onChangePwd })
                   <h3 style={{marginBottom:'1rem'}}>我发布的帖子</h3>
                   {myPosts.length === 0 ? <div style={{color:'#888'}}>暂无帖子</div> : (
                     <ul style={{paddingLeft:0}}>
-                      {myPosts.map((p, idx) => (
-                        <li key={idx} style={{marginBottom:'1rem',listStyle:'none',borderBottom:'1px solid #eee',paddingBottom:'0.5rem'}}>
-                          <div style={{fontWeight:'bold'}}>{p.title}</div>
-                          <div style={{color:'#888',fontSize:'0.95em'}}>{p.createdAt ? new Date(p.createdAt).toLocaleString() : ''}</div>
-                          <div style={{color:'#555'}}>{p.content}</div>
-                        </li>
-                      ))}
+                      {myPosts.map((p, idx) => {
+                        return (
+                          <li key={idx} style={{marginBottom:'1rem',listStyle:'none',borderBottom:'1px solid #eee',paddingBottom:'0.5rem'}}>
+                            <div style={{fontWeight:'bold',cursor:'pointer',color:'#4a90e2'}} onClick={()=>setDetailIdx(p)}>{p.title}</div>
+                            <div style={{color:'#888',fontSize:'0.95em'}}>{p.createdAt ? new Date(p.createdAt).toLocaleString() : ''}</div>
+                            <div style={{color:'#555'}}>{p.content}</div>
+                          </li>
+                        );
+                      })}
                     </ul>
                   )}
                 </div>
@@ -176,13 +178,15 @@ function UserInfo({ user, onUpdate, onBack, onLogout, hasMessage, onChangePwd })
                   <h3 style={{marginBottom:'1rem'}}>我的收藏</h3>
                   {myFavs.length === 0 ? <div style={{color:'#888'}}>暂无收藏</div> : (
                     <ul style={{paddingLeft:0}}>
-                      {myFavs.map((p, idx) => (
-                        <li key={idx} style={{marginBottom:'1rem',listStyle:'none',borderBottom:'1px solid #eee',paddingBottom:'0.5rem'}}>
-                          <div style={{fontWeight:'bold'}}>{p.title}</div>
-                          <div style={{color:'#888',fontSize:'0.95em'}}>{p.createdAt ? new Date(p.createdAt).toLocaleString() : ''}</div>
-                          <div style={{color:'#555'}}>{p.content}</div>
-                        </li>
-                      ))}
+                      {myFavs.map((p, idx) => {
+                        return (
+                          <li key={idx} style={{marginBottom:'1rem',listStyle:'none',borderBottom:'1px solid #eee',paddingBottom:'0.5rem'}}>
+                            <div style={{fontWeight:'bold',cursor:'pointer',color:'#4a90e2'}} onClick={()=>setDetailIdx(p)}>{p.title}</div>
+                            <div style={{color:'#888',fontSize:'0.95em'}}>{p.createdAt ? new Date(p.createdAt).toLocaleString() : ''}</div>
+                            <div style={{color:'#555'}}>{p.content}</div>
+                          </li>
+                        );
+                      })}
                     </ul>
                   )}
                 </div>

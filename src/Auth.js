@@ -40,8 +40,25 @@ function Auth({ onLogin }) {
 
 
   return (
-    <div className="acg-auth" style={{display:'flex',flexDirection:'column',alignItems:'center',justifyContent:'center',height:'100vh'}}>
-      <div style={{width:'320px',background:'#fff',padding:'2rem',borderRadius:'8px',boxShadow:'0 2px 8px rgba(0,0,0,0.08)'}}>
+  <div className="acg-auth" style={{position:'relative',display:'flex',flexDirection:'column',alignItems:'center',justifyContent:'center',height:'100vh',overflow:'hidden',background:'#4a90e2'}}>
+      {/* 顶部大字 */}
+      <div style={{
+        position:'absolute',
+        top:'7%',
+        left:'50%',
+        transform:'translateX(-50%)',
+        fontSize:'5rem',
+  color:'#fff',
+  textShadow:'0 2px 8px rgba(0,0,0,0.10)',
+  opacity:1,
+        fontWeight:'bold',
+        userSelect:'none',
+        pointerEvents:'none',
+        zIndex:0,
+        letterSpacing:'0.2em',
+        whiteSpace:'nowrap',
+      }}>iACG</div>
+      <div style={{width:'320px',background:'#fff',padding:'2rem',borderRadius:'8px',boxShadow:'0 2px 8px rgba(0,0,0,0.08)',zIndex:1}}>
         <h2 style={{textAlign:'center',marginBottom:'2rem'}}>{isLogin ? '登录' : '注册'}</h2>
         <form onSubmit={handleSubmit}>
           <div style={{marginBottom:'1rem'}}>
