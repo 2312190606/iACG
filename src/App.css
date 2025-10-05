@@ -1,0 +1,108 @@
+
+.acg-container {
+  font-family: 'Segoe UI', Arial, sans-serif;
+  background: #f7f7fa;
+  min-height: 100vh;
+}
+.acg-header {
+  background: #4a90e2;
+  color: #fff;
+  padding: 1rem;
+  text-align: center;
+}
+.acg-header nav {
+  margin-top: 1rem;
+}
+.acg-header button {
+  margin: 0 0.5rem;
+  padding: 0.5rem 1rem;
+  border: none;
+  background: #fff;
+  color: #4a90e2;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: bold;
+}
+.acg-header button.active {
+  background: #e3e3e3;
+}
+.acg-header button:hover {
+  background: #e3e3e3;
+}
+main {
+  max-width: 800px;
+  margin: 2rem auto;
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+  padding: 2rem;
+}
+.acg-post-form {
+  margin-bottom: 2rem;
+}
+.acg-post-form input, .acg-post-form select, .acg-post-form textarea {
+  display: block;
+  width: 100%;
+  margin-bottom: 1rem;
+  padding: 0.5rem;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+}
+.acg-post-form button {
+  background: #4a90e2;
+  color: #fff;
+  border: none;
+  padding: 0.5rem 1.5rem;
+  border-radius: 4px;
+  cursor: pointer;
+}
+.acg-posts h2 {
+  margin-top: 0;
+}
+.acg-post {
+  border-bottom: 1px solid #eee;
+  padding: 1rem 0;
+}
+.acg-post:last-child {
+  border-bottom: none;
+}
+.acg-post-title {
+  font-size: 1.2rem;
+  font-weight: bold;
+}
+.acg-post-category {
+  font-size: 0.9rem;
+  color: #888;
+  margin-left: 1rem;
+}
+.acg-post-content {
+  margin: 0.5rem 0 1rem 0;
+}
+.acg-comment-list {
+  margin-left: 1rem;
+  margin-top: 0.5rem;
+}
+.acg-comment {
+  font-size: 0.95rem;
+  color: #555;
+  margin-bottom: 0.5rem;
+}
+.acg-comment-form {
+  display: flex;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+}
+.acg-comment-form input {
+  flex: 1;
+  padding: 0.3rem;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+}
+.acg-comment-form button {
+  background: #4a90e2;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  padding: 0.3rem 1rem;
+  cursor: pointer;
+}
